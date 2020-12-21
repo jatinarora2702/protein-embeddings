@@ -1,54 +1,59 @@
 import argparse
 import json
+import os
 import pickle
 
+import matplotlib.pyplot as plt
 import numpy as np
 import seaborn as sns
-import torch
 from sklearn.decomposition import PCA
 from sklearn.manifold import TSNE
 
-from tape import ProteinBertModel, TAPETokenizer
-import matplotlib.pyplot as plt
-
 
 def main(args):
-    np.random.seed(args.seed)
-    data_file = "../data/{0}/{0}_{1}.json".format(args.name, args.suffix)
-    with open(data_file) as f:
-        data = json.load(f)
+    prefix = "out_test_fold"
+    dir_name = os.path.join(".", "deepsf", prefix, "DCNN_results")
+    file_list = os.listdir(dir_name)
 
-    model = ProteinBertModel.from_pretrained("bert-base")
-    tokenizer = TAPETokenizer(vocab="iupac")
+    protein_data = dict()
 
-    outputs = []
-    labels = []
-    print("total_size:", len(data))
-    for index, entry in enumerate(data):
-        protein_seq = entry["primary"]
-        tokenized_input = torch.tensor([tokenizer.encode(protein_seq)])
-        curr_output = model(tokenized_input)[0].squeeze()
-        outputs.append(curr_output.mean(dim=0).cpu().detach().numpy())
-        if args.cluster_label != None:
-            labels.append(entry[args.cluster_label])
-        else:
-            labels.append(0)
-        if index % 1000 == 0:
-            print("processed {0}".format(index))
+    for file_name in file_list:
+        protein_id = os.path.splitext(file_name)[0]
+        if protein_id not in protein_data:
+            protein_data[protein_id] = dict()
+        if file_name.endswith("hidden_feature"):
+            feat = np.loadtxt(os.path.join(dir_name, file_name))
+            protein_data[protein_id]["deepsf_feat"] = feat
 
-    sequence_output = np.vstack(outputs)
-    print("doing pca")
-    pca_output = PCA(n_components=50).fit_transform(sequence_output)
+    with open("results_test_fold_full.pkl", "rb") as f:
+        tape_results = pickle.load(f)
+
+    for entry in tape_results[1]:
+        protein_data[entry["ids"]]["id"] = entry["ids"]
+        protein_data[entry["ids"]]["seq"] = entry["seq"]
+
+    with open("../data/remote_homology/remote_homology_test_fold_holdout.json", "r") as f:
+        full_data = json.load(f)
+
+    for entry in full_data:
+        protein_data[entry["id"]]["class_label"] = entry["class_label"]
+        protein_data[entry["id"]]["fold_label"] = entry["fold_label"]
+        protein_data[entry["id"]]["family_label"] = entry["family_label"]
+        protein_data[entry["id"]]["superfamily_label"] = entry["superfamily_label"]
+
+    feats = np.array([entry["deepsf_feat"] for entry in protein_data.values()])
+    labels = np.array([entry[args.cluster_label] for entry in protein_data.values()])
+
+    pca_output = PCA(n_components=50).fit_transform(feats)
     print("doing tsne")
     tsne_output = TSNE(n_components=2).fit_transform(pca_output)
     plot_data = {}
     plot_data["pca"] = pca_output
-    # plot_data["data"] = data
     plot_data["x"] = tsne_output[:, 0]
     plot_data["y"] = tsne_output[:, 1]
     plot_data["label"] = labels
 
-    with open("saved/{0}_{1}_{2}".format(args.name, args.suffix, args.cluster_label), "wb") as handle:
+    with open("saved/deepsf_remote_homology_test_holdout_{0}".format(args.cluster_label), "wb") as handle:
         pickle.dump(plot_data, handle, protocol=pickle.HIGHEST_PROTOCOL)
     print("saved")
 
@@ -60,14 +65,12 @@ def main(args):
                     legend="full",
                     alpha=0.3,
                     ax=ax)
-    plt.savefig("saved/{0}_{1}_{2}.png".format(args.name, args.suffix, args.cluster_label), dpi=400)
+    plt.savefig("saved/deepsf_remote_homology_test_holdout_{0}.png".format(args.cluster_label), dpi=400)
 
 
 if __name__ == "__main__":
     ap = argparse.ArgumentParser()
-    ap.add_argument("--name", type=str, default="remote_homology")
-    ap.add_argument("--suffix", type=str, default="train")
-    ap.add_argument("--cluster_label", type=str, default=None)
+    ap.add_argument("--cluster_label", type=str, default="class_label")
     ap.add_argument("--seed", type=int, default=42)
     ap = ap.parse_args()
     main(ap)

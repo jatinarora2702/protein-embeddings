@@ -14,7 +14,7 @@ import matplotlib.pyplot as plt
 
 def main(args):
     np.random.seed(args.seed)
-    data_file = "../data/{0}/{0}_{1}.json".format(args.name, args.suffix)
+    data_file = "data/{0}/{0}_{1}.json".format(args.name, args.suffix)
     with open(data_file) as f:
         data = json.load(f)
 

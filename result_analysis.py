@@ -28,11 +28,11 @@ from scipy.special import  softmax
 if __name__ == "__main__":
 
     prefix = "out_test_fold"
-    dir_name = os.path.join("C:\\Users\\Jatin\\Documents\\Academics\\Projects\\DeepSF", "test", prefix, "DCNN_results")
+    dir_name = os.path.join("deepsf", prefix, "DCNN_results")
     file_list = os.listdir(dir_name)
 
     protein_id_to_true_label = dict()
-    with open(os.path.join("C:\\Users\\Jatin\\Documents\\Academics\\Projects\\DeepSF", "test", prefix, "DCNN_results.txt")) as f:
+    with open(os.path.join("deepsf", prefix, "DCNN_results.txt")) as f:
         for index, line in enumerate(f):
             if index == 0:
                 continue
@@ -41,7 +41,7 @@ if __name__ == "__main__":
                 protein_id_to_true_label[s[0]] = s[1]
 
     label_to_index = dict()
-    with open(os.path.join("C:\\Users\\Jatin\\Documents\\Academics\\Projects\\DeepSF", "datasets", "fold_label_relation2.txt")) as f:
+    with open(os.path.join("deepsf", "fold_label_relation2.txt")) as f:
         for index, line in enumerate(f):
             if index == 0:
                 continue
@@ -87,7 +87,7 @@ if __name__ == "__main__":
         if "tape" not in test_probs[key]:
             del test_probs[key]
 
-    with open("../data/remote_homology/remote_homology_test_fold_holdout.json", "r") as f:
+    with open("./data/remote_homology/remote_homology_test_fold_holdout.json", "r") as f:
         full_data = json.load(f)
     full_data = {entry["id"]: entry for entry in full_data}
 

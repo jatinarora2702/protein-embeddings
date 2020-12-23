@@ -18,7 +18,7 @@ numpy
 
 ## Dataset
 
-Download remote_homology json dataset from TAPE repository and place in data directory at the repo root level.
+Download [remote_homology](https://github.com/songlab-cal/tape#raw-data) json dataset from TAPE repository and unzip it in [data](data) directory.
 
 ## Global Sequence Alignment Based Clustering
 
@@ -37,18 +37,18 @@ bash pretrained_cluster_script.sh
 
 For training from scratch:
 ```
-CUDA_VISIBLE_DEVICES=0,2,4,5 python main.py transformer remote_homology --from_pretrained bert-base --batch_size 64 --gradient_accumulation_steps 16 --num_train_epochs 15
+CUDA_VISIBLE_DEVICES=0,2,4,5 python train.py transformer remote_homology --from_pretrained bert-base --batch_size 64 --gradient_accumulation_steps 16 --num_train_epochs 15
 ```
 
 For resuming training from previously saved checkpoint:
 ```
-CUDA_VISIBLE_DEVICES=0,2,4,5 python main.py transformer remote_homology --from_pretrained results/remote_homology_transformer_20-12-19-04-49-07_070319 --batch_size 64 --gradient_accumulation_steps 16 --num_train_epochs 15 --resume_from_checkpoint
+CUDA_VISIBLE_DEVICES=0,2,4,5 python train.py transformer remote_homology --from_pretrained results/remote_homology_transformer_20-12-19-04-49-07_070319 --batch_size 64 --gradient_accumulation_steps 16 --num_train_epochs 15 --resume_from_checkpoint
 ```
 
 ## Supervised Learning (Evaluation)
 
 ```
-CUDA_VISIBLE_DEVICES=4,5,6,7 python main.py transformer remote_homology remote_homology_transformer_20-12-20-05-26-23_907518 --batch_size 64 --metric accuracy --split test_fold_holdout
+CUDA_VISIBLE_DEVICES=4,5,6,7 python test.py transformer remote_homology remote_homology_transformer_20-12-20-05-26-23_907518 --batch_size 64 --metric accuracy --split test_fold_holdout
 ```
 
 ## tSNE Projections

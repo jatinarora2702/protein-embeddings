@@ -32,7 +32,7 @@ def main(args):
         protein_data[entry["ids"]]["id"] = entry["ids"]
         protein_data[entry["ids"]]["seq"] = entry["seq"]
 
-    with open("../data/remote_homology/remote_homology_test_fold_holdout.json", "r") as f:
+    with open("data/remote_homology/remote_homology_test_fold_holdout.json", "r") as f:
         full_data = json.load(f)
 
     for entry in full_data:

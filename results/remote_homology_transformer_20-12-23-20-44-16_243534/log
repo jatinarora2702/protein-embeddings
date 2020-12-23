@@ -1,0 +1,39 @@
+20/12/23 14:44:35 - INFO - tape.models.modeling_utils -   loading configuration file https://s3.amazonaws.com/proteindata/pytorch-models/bert-base-config.json from cache at /home/jatin2/.cache/torch/protein_models/6373bfcc1f9755cd1b90c75a4c82e5b6ace8db121253e86653b69c3fec08ed04.05edb4ed225e1907a3878f9d68b275d79e025b667555aa94a086e27cb5c591e0
+20/12/23 14:44:35 - INFO - tape.models.modeling_utils -   Model config {
+  "attention_probs_dropout_prob": 0.1,
+  "base_model": "transformer",
+  "finetuning_task": null,
+  "hidden_act": "gelu",
+  "hidden_dropout_prob": 0.1,
+  "hidden_size": 768,
+  "initializer_range": 0.02,
+  "input_size": 768,
+  "intermediate_size": 3072,
+  "layer_norm_eps": 1e-12,
+  "max_position_embeddings": 8192,
+  "num_attention_heads": 12,
+  "num_hidden_layers": 12,
+  "num_labels": 1195,
+  "output_attentions": false,
+  "output_hidden_states": false,
+  "output_size": 768,
+  "pruned_heads": {},
+  "torchscript": false,
+  "type_vocab_size": 1,
+  "vocab_size": 30
+}
+
+20/12/23 14:44:35 - INFO - tape.models.modeling_utils -   loading weights file https://s3.amazonaws.com/proteindata/pytorch-models/bert-base-pytorch_model.bin from cache at /home/jatin2/.cache/torch/protein_models/6d307d719bd3cf0453747b0ae7362b8297eb16a045ac50aee4ed9e8890afe773.8206daaea9be2736b6ccde432df9dc3dbb8c3233b47f07688d6ff38d74258d22
+20/12/23 14:44:44 - INFO - tape.models.modeling_utils -   Weights of ProteinBertForSequenceClassification not initialized from pretrained model: ['lin1.weight', 'lin1.bias', 'lin2.weight', 'lin2.bias', 'classify.classify.main.0.bias', 'classify.classify.main.0.weight_g', 'classify.classify.main.0.weight_v', 'classify.classify.main.3.bias', 'classify.classify.main.3.weight_g', 'classify.classify.main.3.weight_v']
+20/12/23 14:44:44 - INFO - tape.models.modeling_utils -   Weights from pretrained model not used in ProteinBertForSequenceClassification: ['mlm.bias', 'mlm.transform.dense.weight', 'mlm.transform.dense.bias', 'mlm.transform.LayerNorm.weight', 'mlm.transform.LayerNorm.bias', 'mlm.decoder.weight']
+20/12/23 14:44:47 - INFO - tape.visualization -   tensorboard file at: logs/remote_homology_transformer_20-12-23-20-44-16_243534
+20/12/23 14:44:47 - WARNING - tape.visualization -   Cannot log config when using a TBVisualizer. Configure wandb for this functionality
+20/12/23 14:44:47 - WARNING - tape.visualization -   Cannot log config when using a TBVisualizer. Configure wandb for this functionality
+20/12/23 14:44:47 - WARNING - tape.visualization -   Cannot watch models when using a TBVisualizer. Configure wandb for this functionality
+20/12/23 14:44:47 - INFO - tape.training -   device: cuda n_gpu: 4, distributed_training: False, 16-bits training: False
+20/12/23 14:44:47 - INFO - tape.training -   ***** Running training *****
+20/12/23 14:44:47 - INFO - tape.training -     Num examples = 12312
+20/12/23 14:44:47 - INFO - tape.training -     Batch size = 64
+20/12/23 14:44:47 - INFO - tape.training -     Num epochs = 15
+20/12/23 14:44:47 - INFO - tape.training -     Num train steps = 2885
+20/12/23 14:44:47 - INFO - tape.training -     Num of parameters = 3115879

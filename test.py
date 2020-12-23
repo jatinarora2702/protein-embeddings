@@ -61,7 +61,7 @@ def create_train_parser(base_parser: argparse.ArgumentParser) -> argparse.Argume
                         help='Learning rate')
     parser.add_argument('--batch_size', default=1024, type=int,
                         help='Batch size')
-    parser.add_argument('--data_dir', default='../data', type=utils.check_is_dir,
+    parser.add_argument('--data_dir', default='./data', type=utils.check_is_dir,
                         help='Directory from which to load task data')
     parser.add_argument('--num_train_epochs', default=10, type=int,
                         help='Number of training epochs')
@@ -104,7 +104,7 @@ def create_eval_parser(base_parser: argparse.ArgumentParser) -> argparse.Argumen
                         help='Directory containing config and pretrained model weights')
     parser.add_argument('--batch_size', default=1024, type=int,
                         help='Batch size')
-    parser.add_argument('--data_dir', default='../data', type=utils.check_is_dir,
+    parser.add_argument('--data_dir', default='./data', type=utils.check_is_dir,
                         help='Directory from which to load task data')
     parser.add_argument('--metrics', default=[],
                         help=f'Metrics to run on the result. '
@@ -253,5 +253,5 @@ def run_train_distributed(args: typing.Optional[argparse.Namespace] = None) -> N
 
 
 if __name__ == '__main__':
-    # run_eval()
-    run_train()
+    run_eval()
+    
